@@ -27,3 +27,10 @@ test('rejects a message missing the event type', () => {
   const error = validateRequiredFields(parseHl7v2(missingEvn));
   assert.match(error, /event type/);
 });
+
+test('rejects a message with an unsupported message type', () => {
+  const wrongType = validMessage.replace('ADT^A01', 'ADT^A08');
+  const error = validateRequiredFields(parseHl7v2(wrongType));
+  assert.match(error, /Unsupported message type/);
+  assert.match(error, /ADT\^A08/);
+});
